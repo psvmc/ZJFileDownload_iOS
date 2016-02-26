@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="p0B-nu-EB2">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+    </dependencies>
+    <scenes>
+        <!--文件下载管理-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="DownloadViewController" customModule="ZJFileDownload_iOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WMn-9d-ovE">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <subviews>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="2Xg-si-ioa">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    </tableView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="2Xg-si-ioa" secondAttribute="bottom" id="8G1-2u-Lq6"/>
+                                    <constraint firstItem="2Xg-si-ioa" firstAttribute="leading" secondItem="WMn-9d-ovE" secondAttribute="leading" id="iay-lh-1ZE"/>
+                                    <constraint firstAttribute="trailing" secondItem="2Xg-si-ioa" secondAttribute="trailing" id="qoX-0b-KHD"/>
+                                    <constraint firstItem="2Xg-si-ioa" firstAttribute="top" secondItem="WMn-9d-ovE" secondAttribute="top" id="vEq-Ud-zBe"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="WMn-9d-ovE" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="Vdm-4s-K0g"/>
+                            <constraint firstItem="WMn-9d-ovE" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="bUn-FB-0qD"/>
+                            <constraint firstItem="WMn-9d-ovE" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="g2h-Em-aYA"/>
+                            <constraint firstItem="WMn-9d-ovE" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="tHP-7y-I9q"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="文件下载管理" id="rgM-nO-v3w"/>
+                    <connections>
+                        <outlet property="tableView" destination="2Xg-si-ioa" id="IBp-Vo-MVd"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="685" y="274"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="i9U-HI-Zw8">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="p0B-nu-EB2" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="boG-yl-aPd">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="Ydo-MB-OBs"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="v3b-7E-ZP7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="153" y="274"/>
+        </scene>
+    </scenes>
+</document>
