@@ -14,6 +14,8 @@ class ZJDownloadManager{
     private static let documentsPath: AnyObject = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,.UserDomainMask,true)[0]
     //下载
     
+    static var lastTime = NSDate().timeIntervalSince1970 * 1000;
+    
     
     static func getFileSize(byte:CGFloat)->String{
         let oneKB = CGFloat(1024.0);
@@ -39,25 +41,44 @@ class ZJDownloadManager{
         }else if(!operationIsExist(fileInfo)){
             fileInfo.status = ZJFileInfo.STATUS_CONNECTING;
             self.delegate?.viewRefresh();
-    
+            
             let operation = LCDownloadManager.downloadFileWithURLString(fileInfo.url, cachePath: fileInfo.name, progress: {
                 (progress:CGFloat!, totalByteRead:CGFloat!, totalByteExpectedToRead:CGFloat!) -> Void in
-                
-                fileInfo.progress = Float(progress);
-                fileInfo.perSize = getFileSize(totalByteExpectedToRead);
-                fileInfo.downloadPerSize = getFileSize(totalByteRead);
-                if(progress<1 && progress>0){
-                    fileInfo.status = ZJFileInfo.STATUS_DOWNLOADING;
-                }else if(progress == 1){
-                    fileInfo.status = ZJFileInfo.STATUS_COMPLETE;
+                let progressFloat:Float = (String(format: "%.2f", Float(progress)) as NSString).floatValue;
+                if(fileInfo.progress != progressFloat){
+                    
+                    fileInfo.progress = progressFloat;
+                    fileInfo.perSize = getFileSize(totalByteExpectedToRead);
+                    fileInfo.downloadPerSize = getFileSize(totalByteRead);
+                    
+                    if(progressFloat<1 && progressFloat>0){
+                        fileInfo.status = ZJFileInfo.STATUS_DOWNLOADING;
+                    }else if(progressFloat == 1){
+                        fileInfo.downloadPerSize = fileInfo.perSize;
+                        fileInfo.status = ZJFileInfo.STATUS_COMPLETE;
+                    }
+                    
+                    if(progressFloat == 1){
+                        self.delegate?.viewRefresh();
+                    }else if(progressFloat > 0){
+                        let nowTime = NSDate().timeIntervalSince1970 * 1000;
+                        if(nowTime - lastTime > 1000){
+                            lastTime = nowTime;
+                            self.delegate?.viewRefresh();
+                        }
+                    }
+
+                    
                 }
-                self.delegate?.viewRefresh();
+                
+                
+                
                 }, success: {
                     (operation:AFHTTPRequestOperation!, responseObject: AnyObject!) -> Void in
                     
                 }, failure: {
                     (operation:AFHTTPRequestOperation?,error:NSError?) -> Void in
-            
+                    
                     fileInfo.status = ZJFileInfo.STATUS_DOWNLOAD_ERROR;
                     self.delegate?.viewRefresh();
             })

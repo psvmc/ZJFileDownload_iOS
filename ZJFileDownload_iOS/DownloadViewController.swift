@@ -15,6 +15,8 @@ class DownloadViewController: UIViewController,UITableViewDataSource,UITableView
     var logger = XCGLogger.defaultInstance();
     var documentInteractionController:UIDocumentInteractionController!;
     
+    var isFirstLoad = true;
+    
     let fileManager = NSFileManager.defaultManager();
     let documentsPath: AnyObject = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,.UserDomainMask,true)[0]
     private static let documentsPath: AnyObject = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,.UserDomainMask,true)[0]
@@ -70,11 +72,17 @@ class DownloadViewController: UIViewController,UITableViewDataSource,UITableView
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let num=indexPath.row
         let item = ZJFileDataSource.myDataSource[num];
-        if(ZJDownloadManager.fileIsExist(item)){
-            item.status = ZJFileInfo.STATUS_COMPLETE;
-            item.progress = 1;
-            item.downloadPerSize = item.perSize;
+        if(isFirstLoad){
+            if(ZJDownloadManager.fileIsExist(item)){
+                item.status = ZJFileInfo.STATUS_COMPLETE;
+                item.progress = 1;
+                item.downloadPerSize = item.perSize;
+            }
+            if(item == ZJFileDataSource.myDataSource.last){
+                isFirstLoad = false;
+            }
         }
+
         let cell = tableView.dequeueReusableCellWithIdentifier("DownloadTableViewCell") as! DownloadTableViewCell;
         cell.fileNameLabel.text = item.name;
         cell.fileSizeLabel.text = item.downloadPerSize + "/" + item.perSize;
@@ -92,6 +100,7 @@ class DownloadViewController: UIViewController,UITableViewDataSource,UITableView
         cell.selectionStyle = UITableViewCellSelectionStyle.None;
         return cell;
     }
+    
     
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return false;
@@ -175,7 +184,5 @@ class DownloadViewController: UIViewController,UITableViewDataSource,UITableView
             self.showNoticeInfo("文件尚未下载", time: 1.2);
         }
     }
-    
-
     
 }
