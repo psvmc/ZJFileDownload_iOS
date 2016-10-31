@@ -9,11 +9,11 @@
 import Foundation
 
 class ZJFileDataSource:NSObject{
-    private static var id = 0;
+    fileprivate static var id = 0;
     static var myDataSource:[ZJFileInfo] = [ZJFileInfo]();
     
     ///添加文件
-    static func addFileInfo(fileInfo:ZJFileInfo){
+    static func addFileInfo(_ fileInfo:ZJFileInfo){
         if(!fileIsExist(fileInfo)){
             id += 1;
             fileInfo.id = id;
@@ -22,17 +22,17 @@ class ZJFileDataSource:NSObject{
     }
     
     ///根据id移除文件
-    static func removeFileById(id:Int){
-        for (index,fileInfo) in ZJFileDataSource.myDataSource.enumerate(){
+    static func removeFileById(_ id:Int){
+        for (index,fileInfo) in ZJFileDataSource.myDataSource.enumerated(){
             if(fileInfo.id == id){
-                myDataSource.removeAtIndex(index);
+                myDataSource.remove(at: index);
             }
         }
     }
     
     ///根据id获取文件
-    static func getFileById(id:Int)->ZJFileInfo?{
-        for (index,fileInfo) in ZJFileDataSource.myDataSource.enumerate(){
+    static func getFileById(_ id:Int)->ZJFileInfo?{
+        for (index,fileInfo) in ZJFileDataSource.myDataSource.enumerated(){
             if(fileInfo.id == id){
                 return myDataSource[index];
             }
@@ -41,7 +41,7 @@ class ZJFileDataSource:NSObject{
     }
     
     ///文件是否已添加
-    static func fileIsExist(file:ZJFileInfo)->Bool{
+    static func fileIsExist(_ file:ZJFileInfo)->Bool{
         for fileInfo in ZJFileDataSource.myDataSource{
             if(file.url == fileInfo.url){
                 return true;

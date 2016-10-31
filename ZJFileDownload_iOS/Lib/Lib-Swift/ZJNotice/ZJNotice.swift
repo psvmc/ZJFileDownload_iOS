@@ -12,27 +12,23 @@ import UIKit
 extension UIViewController {
     
     ///延迟执行方法
-    func delay(delay:Double, closure:()->()) {
-        dispatch_after(
-            dispatch_time(
-                DISPATCH_TIME_NOW,
-                Int64(delay * Double(NSEC_PER_SEC))
-            ),
-            dispatch_get_main_queue(), closure)
+    func delay(_ delay:Double, closure:@escaping ()->()) {
+        DispatchQueue.main.asyncAfter(
+            deadline: DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: closure)
     }
     
     ///显示成功弹窗，不自动关闭
-    func showNoticeSuc(text: String) {
+    func showNoticeSuc(_ text: String) {
         ZJNotice.showNoticeWithText(ZJNoticeType.success, text: text,time: 0, autoClear: false);
     }
     
     ///显示成功弹窗，延时关闭
-    func showNoticeSuc(text: String,time:NSTimeInterval) {
+    func showNoticeSuc(_ text: String,time:TimeInterval) {
         ZJNotice.showNoticeWithText(ZJNoticeType.success, text: text,time: time, autoClear: true);
     }
     
     ///显示成功弹窗，延时关闭，回调事件
-    func showNoticeSuc(text: String,time:NSTimeInterval,callbackBlock:()->()){
+    func showNoticeSuc(_ text: String,time:TimeInterval,callbackBlock:@escaping ()->()){
         ZJNotice.showNoticeWithText(ZJNoticeType.success, text: text,time: 0, autoClear: false);
         delay(time, closure: {
             ()->() in
@@ -42,17 +38,17 @@ extension UIViewController {
     }
     
     ///显示错误弹窗，不自动关闭
-    func showNoticeErr(text: String) {
+    func showNoticeErr(_ text: String) {
         ZJNotice.showNoticeWithText(ZJNoticeType.error, text: text,time: 0, autoClear: false);
     }
     
     ///显示错误弹窗，延时关闭
-    func showNoticeErr(text: String,time:NSTimeInterval) {
+    func showNoticeErr(_ text: String,time:TimeInterval) {
         ZJNotice.showNoticeWithText(ZJNoticeType.error, text: text, time:time,autoClear: true);
     }
     
     ///显示错误弹窗，延时关闭，回调事件
-    func showNoticeErr(text: String,time:NSTimeInterval,callbackBlock:()->()){
+    func showNoticeErr(_ text: String,time:TimeInterval,callbackBlock:@escaping ()->()){
         ZJNotice.showNoticeWithText(ZJNoticeType.error, text: text,time: 0, autoClear: false);
         delay(time, closure: {
             ()->() in
@@ -62,17 +58,17 @@ extension UIViewController {
     }
     
     ///显示提醒弹窗，不自动关闭
-    func showNoticeInfo(text: String) {
+    func showNoticeInfo(_ text: String) {
         ZJNotice.showNoticeWithText(ZJNoticeType.info, text: text, time: 0,autoClear: false)
     }
     
     ///显示提醒弹窗，延时关闭
-    func showNoticeInfo(text: String,time:NSTimeInterval) {
+    func showNoticeInfo(_ text: String,time:TimeInterval) {
         ZJNotice.showNoticeWithText(ZJNoticeType.info, text: text, time: time,autoClear: true)
     }
     
     ///显示提醒弹窗，延时关闭，回调事件
-    func showNoticeInfo(text: String,time:NSTimeInterval,callbackBlock:()->()){
+    func showNoticeInfo(_ text: String,time:TimeInterval,callbackBlock:@escaping ()->()){
         ZJNotice.showNoticeWithText(ZJNoticeType.info, text: text, time: 0,autoClear: false)
         delay(time, closure: {
             ()->() in
@@ -87,12 +83,12 @@ extension UIViewController {
     }
     
     ///显示等待弹窗，延时关闭
-    func showNoticeWait(time:NSTimeInterval){
+    func showNoticeWait(_ time:TimeInterval){
         ZJNotice.wait(time,autoClear: true)
     }
     
     ///显示等待弹窗，延时关闭，回调事件
-    func showNoticeWait(time:NSTimeInterval,callbackBlock:()->()){
+    func showNoticeWait(_ time:TimeInterval,callbackBlock:@escaping ()->()){
         ZJNotice.wait(0,autoClear: false);
         delay(time, closure: {
             ()->() in
@@ -102,18 +98,18 @@ extension UIViewController {
     }
     
     ///显示等待带文本弹窗，不自动关闭
-    func showNoticeWait(text text: String){
+    func showNoticeWait(text: String){
         ZJNotice.waitWithText(text, time: 0, autoClear: false);
     }
     
     ///显示等待带文本弹窗，延时关闭
-    func showNoticeWait(text: String,time:NSTimeInterval){
+    func showNoticeWait(_ text: String,time:TimeInterval){
         ZJNotice.waitWithText(text, time: time, autoClear: true);
     }
     
     ///显示等待带文本弹窗，延时关闭，回调事件
-    func showNoticeWait(text: String,time:NSTimeInterval,callbackBlock:()->()){
-         ZJNotice.waitWithText(text, time: 0, autoClear: false);
+    func showNoticeWait(_ text: String,time:TimeInterval,callbackBlock:@escaping ()->()){
+        ZJNotice.waitWithText(text, time: 0, autoClear: false);
         delay(time, closure: {
             ()->() in
             self.clearAllNotice();
@@ -122,17 +118,17 @@ extension UIViewController {
     }
     
     ///显示文本弹窗，不自动关闭
-    func showNoticeText(text: String) {
+    func showNoticeText(_ text: String) {
         ZJNotice.showText(text,time:0,autoClear:false)
     }
     
     ///显示文本弹窗，延时关闭
-    func showNoticeText(text: String,time:NSTimeInterval) {
+    func showNoticeText(_ text: String,time:TimeInterval) {
         ZJNotice.showText(text,time:time,autoClear:true);
     }
     
     ///显示文本弹窗，延时关闭，回调事件
-    func showNoticeText(text: String,time:NSTimeInterval,callbackBlock:()->()){
+    func showNoticeText(_ text: String,time:TimeInterval,callbackBlock:@escaping ()->()){
         ZJNotice.showText(text,time:0,autoClear:false);
         delay(time, closure: {
             ()->() in
@@ -159,13 +155,13 @@ enum ZJNoticeType{
 }
 
 class ZJNotice: NSObject {
-    private static var imageOfCheckmark: UIImage?
-    private static var imageOfCross: UIImage?
-    private static var imageOfInfo: UIImage?
-    private static let waitTag = 98
+    fileprivate static var imageOfCheckmark: UIImage?
+    fileprivate static var imageOfCross: UIImage?
+    fileprivate static var imageOfInfo: UIImage?
+    fileprivate static let waitTag = 98
     static var notices = Array<UIView>()
-    static let rv = UIApplication.sharedApplication().keyWindow?.subviews.first!
-    static var window:UIWindow = UIApplication.sharedApplication().keyWindow!
+    static let rv = UIApplication.shared.keyWindow?.subviews.first!
+    static var window:UIWindow = UIApplication.shared.keyWindow!
     
     static func clear() {
         for i in notices {
@@ -182,15 +178,15 @@ class ZJNotice: NSObject {
     }
     
     //菊花图
-    static func wait(time:NSTimeInterval,autoClear: Bool) {
+    static func wait(_ time:TimeInterval,autoClear: Bool) {
         clear()
-        let frame = CGRectMake(0, 0, 78, 78)
+        let frame = CGRect(x: 0, y: 0, width: 78, height: 78)
         let mainView = UIView(frame: frame)
         mainView.layer.cornerRadius = 12
         mainView.backgroundColor = UIColor(red:0, green:0, blue:0, alpha: 0.8)
         
-        let ai = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
-        ai.frame = CGRectMake(21, 21, 36, 36)
+        let ai = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+        ai.frame = CGRect(x: 21, y: 21, width: 36, height: 36)
         ai.startAnimating()
         mainView.addSubview(ai)
         mainView.tag = waitTag;
@@ -198,31 +194,31 @@ class ZJNotice: NSObject {
     }
     
     //菊花图带文字
-    static func waitWithText(text: String,time:NSTimeInterval,autoClear: Bool) {
+    static func waitWithText(_ text: String,time:TimeInterval,autoClear: Bool) {
         clear();
         
-        let font = UIFont.systemFontOfSize(13);
-        let attrs = [NSFontAttributeName:font,NSForegroundColorAttributeName:UIColor.whiteColor()];
-        let fontSize = (text as NSString).sizeWithAttributes(attrs);
+        let font = UIFont.systemFont(ofSize: 13);
+        let attrs = [NSFontAttributeName:font,NSForegroundColorAttributeName:UIColor.white];
+        let fontSize = (text as NSString).size(attributes: attrs);
         let fontWidth = fontSize.width;
-
-        let frame = CGRectMake(0, 0, fontWidth+40, 100)
+        
+        let frame = CGRect(x: 0, y: 0, width: fontWidth+40, height: 100)
         let mainView = UIView(frame: frame)
         mainView.layer.cornerRadius = 12
         mainView.backgroundColor = UIColor(red:0, green:0, blue:0, alpha: 0.8)
         
-        let ai = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
-        ai.frame = CGRectMake(21, 21, 36, 36)
+        let ai = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+        ai.frame = CGRect(x: 21, y: 21, width: 36, height: 36)
         ai.startAnimating()
         mainView.addSubview(ai)
         ai.center.x = mainView.center.x;
         
         //添加文字
-        let label = UILabel(frame: CGRectMake(0, 65, fontWidth+10, 16))
+        let label = UILabel(frame: CGRect(x: 0, y: 65, width: fontWidth+10, height: 16))
         label.font = font;
-        label.textColor = UIColor.whiteColor();
+        label.textColor = UIColor.white;
         label.text = text;
-        label.textAlignment = NSTextAlignment.Center;
+        label.textAlignment = NSTextAlignment.center;
         mainView.addSubview(label);
         label.center.x = mainView.center.x;
         mainView.tag = waitTag;
@@ -230,11 +226,11 @@ class ZJNotice: NSObject {
     }
     
     //仅文字
-    static func showText(text: String,time:NSTimeInterval,autoClear: Bool) {
+    static func showText(_ text: String,time:TimeInterval,autoClear: Bool) {
         clear()
-        let font = UIFont.systemFontOfSize(13);
-        let attrs = [NSFontAttributeName:font,NSForegroundColorAttributeName:UIColor.whiteColor()];
-        let fontSize = (text as NSString).sizeWithAttributes(attrs);
+        let font = UIFont.systemFont(ofSize: 13);
+        let attrs = [NSFontAttributeName:font,NSForegroundColorAttributeName:UIColor.white];
+        let fontSize = (text as NSString).size(attributes: attrs);
         let fontWidth = fontSize.width;
         let fontHeight = fontSize.height;
         
@@ -249,29 +245,29 @@ class ZJNotice: NSObject {
         label.text = text
         label.numberOfLines = 0
         label.font = font;
-        label.textAlignment = NSTextAlignment.Center;
-        label.textColor = UIColor.whiteColor();
-        label.frame = CGRectMake(0, 0, 150, fontLinesHeight+10);
+        label.textAlignment = NSTextAlignment.center;
+        label.textColor = UIColor.white;
+        label.frame = CGRect(x: 0, y: 0, width: 150, height: fontLinesHeight+10);
         
         mainView.addSubview(label)
-        mainView.frame = CGRectMake(0, 0, label.frame.width + 50 , fontLinesHeight + 20);
+        mainView.frame = CGRect(x: 0, y: 0, width: label.frame.width + 50 , height: fontLinesHeight + 20);
         
         label.center = mainView.center;
         addView(mainView, time: time, autoClear: autoClear)
     }
     
     //有勾、叉和警告
-    static func showNoticeWithText(type: ZJNoticeType,text: String,time:NSTimeInterval,autoClear: Bool) {
+    static func showNoticeWithText(_ type: ZJNoticeType,text: String,time:TimeInterval,autoClear: Bool) {
         clear()
         
-        let font = UIFont.systemFontOfSize(13);
-        let attrs = [NSFontAttributeName:font,NSForegroundColorAttributeName:UIColor.whiteColor()];
+        let font = UIFont.systemFont(ofSize: 13);
+        let attrs = [NSFontAttributeName:font,NSForegroundColorAttributeName:UIColor.white];
         
-        let fontSize = (text as NSString).sizeWithAttributes(attrs);
+        let fontSize = (text as NSString).size(attributes: attrs);
         
         let fontWidth = fontSize.width;
         
-        let frame = CGRectMake(0, 0, fontWidth+40, 90)
+        let frame = CGRect(x: 0, y: 0, width: fontWidth+40, height: 90)
         let mainView = UIView(frame: frame)
         mainView.layer.cornerRadius = 10
         mainView.backgroundColor = UIColor(red:0, green:0, blue:0, alpha: 0.7)
@@ -286,86 +282,86 @@ class ZJNotice: NSObject {
             image = drawCacheImg(imageOfInfo,type: ZJNoticeType.info)
         }
         let checkmarkView = UIImageView(image: image)
-        checkmarkView.frame = CGRectMake(27, 15, 36, 36)
+        checkmarkView.frame = CGRect(x: 27, y: 15, width: 36, height: 36)
         mainView.addSubview(checkmarkView);
         checkmarkView.center.x = mainView.center.x;
         
-        let label = UILabel(frame: CGRectMake(0, 60, fontWidth, 16))
+        let label = UILabel(frame: CGRect(x: 0, y: 60, width: fontWidth, height: 16))
         label.font = font;
-        label.textColor = UIColor.whiteColor();
+        label.textColor = UIColor.white;
         label.text = text;
-        label.textAlignment = NSTextAlignment.Center;
+        label.textAlignment = NSTextAlignment.center;
         mainView.addSubview(label);
         label.center.x = mainView.center.x;
         addView(mainView, time: time, autoClear: autoClear);
     }
     
-    static func addView(mainView:UIView,time:NSTimeInterval,autoClear:Bool){
+    static func addView(_ mainView:UIView,time:TimeInterval,autoClear:Bool){
         mainView.center = rv!.center
         window.addSubview(mainView)
         notices.append(mainView)
         
         if autoClear {
-            NSTimer.scheduledTimerWithTimeInterval(time, target: self, selector: "hideNotice:", userInfo: mainView, repeats: false)
+            Timer.scheduledTimer(timeInterval: time, target: self, selector: #selector(ZJNotice.hideNotice(_:)), userInfo: mainView, repeats: false)
         }
     }
     
-    static func hideNotice(sender: NSTimer) {
+    static func hideNotice(_ sender: Timer) {
         if sender.userInfo is UIView {
-            sender.userInfo!.removeFromSuperview()
+            (sender.userInfo! as AnyObject).removeFromSuperview()
         }
     }
     
     //下面是画图的
-    class func draw(type: ZJNoticeType) {
+    class func draw(_ type: ZJNoticeType) {
         let checkmarkShapePath = UIBezierPath()
         // 先画个圈圈
-        checkmarkShapePath.moveToPoint(CGPointMake(36, 18))
-        checkmarkShapePath.addArcWithCenter(CGPointMake(18, 18), radius: 17.5, startAngle: 0, endAngle: CGFloat(M_PI*2), clockwise: true)
-        checkmarkShapePath.closePath()
+        checkmarkShapePath.move(to: CGPoint(x: 36, y: 18))
+        checkmarkShapePath.addArc(withCenter: CGPoint(x: 18, y: 18), radius: 17.5, startAngle: 0, endAngle: CGFloat(M_PI*2), clockwise: true)
+        checkmarkShapePath.close()
         
         switch type {
         case .success: // 画勾
-            checkmarkShapePath.moveToPoint(CGPointMake(10, 18))
-            checkmarkShapePath.addLineToPoint(CGPointMake(16, 24))
-            checkmarkShapePath.addLineToPoint(CGPointMake(27, 13))
-            checkmarkShapePath.moveToPoint(CGPointMake(10, 18))
-            checkmarkShapePath.closePath()
+            checkmarkShapePath.move(to: CGPoint(x: 10, y: 18))
+            checkmarkShapePath.addLine(to: CGPoint(x: 16, y: 24))
+            checkmarkShapePath.addLine(to: CGPoint(x: 27, y: 13))
+            checkmarkShapePath.move(to: CGPoint(x: 10, y: 18))
+            checkmarkShapePath.close()
         case .error: // 画叉
-            checkmarkShapePath.moveToPoint(CGPointMake(10, 10))
-            checkmarkShapePath.addLineToPoint(CGPointMake(26, 26))
-            checkmarkShapePath.moveToPoint(CGPointMake(10, 26))
-            checkmarkShapePath.addLineToPoint(CGPointMake(26, 10))
-            checkmarkShapePath.moveToPoint(CGPointMake(10, 10))
-            checkmarkShapePath.closePath()
+            checkmarkShapePath.move(to: CGPoint(x: 10, y: 10))
+            checkmarkShapePath.addLine(to: CGPoint(x: 26, y: 26))
+            checkmarkShapePath.move(to: CGPoint(x: 10, y: 26))
+            checkmarkShapePath.addLine(to: CGPoint(x: 26, y: 10))
+            checkmarkShapePath.move(to: CGPoint(x: 10, y: 10))
+            checkmarkShapePath.close()
         case .info:  //画警告
-            checkmarkShapePath.moveToPoint(CGPointMake(18, 6))
-            checkmarkShapePath.addLineToPoint(CGPointMake(18, 22))
-            checkmarkShapePath.moveToPoint(CGPointMake(18, 6))
-            checkmarkShapePath.closePath()
+            checkmarkShapePath.move(to: CGPoint(x: 18, y: 6))
+            checkmarkShapePath.addLine(to: CGPoint(x: 18, y: 22))
+            checkmarkShapePath.move(to: CGPoint(x: 18, y: 6))
+            checkmarkShapePath.close()
             
-            UIColor.whiteColor().setStroke()
+            UIColor.white.setStroke()
             checkmarkShapePath.stroke()
             
             let checkmarkShapePath = UIBezierPath()
-            checkmarkShapePath.moveToPoint(CGPointMake(18, 27))
-            checkmarkShapePath.addArcWithCenter(CGPointMake(18, 27), radius: 1, startAngle: 0, endAngle: CGFloat(M_PI*2), clockwise: true)
-            checkmarkShapePath.closePath()
+            checkmarkShapePath.move(to: CGPoint(x: 18, y: 27))
+            checkmarkShapePath.addArc(withCenter: CGPoint(x: 18, y: 27), radius: 1, startAngle: 0, endAngle: CGFloat(M_PI*2), clockwise: true)
+            checkmarkShapePath.close()
             
-            UIColor.whiteColor().setFill()
+            UIColor.white.setFill()
             checkmarkShapePath.fill()
         }
         
-        UIColor.whiteColor().setStroke()
+        UIColor.white.setStroke()
         checkmarkShapePath.stroke()
     }
     
     
-    class func drawCacheImg(cacheImg: UIImage?,type:ZJNoticeType)->UIImage{
+    class func drawCacheImg(_ cacheImg: UIImage?,type:ZJNoticeType)->UIImage{
         if (cacheImg != nil) {
             return cacheImg!
         }
-        UIGraphicsBeginImageContextWithOptions(CGSizeMake(36, 36), false, 0)
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: 36, height: 36), false, 0)
         draw(type);
         
         switch type{
@@ -384,7 +380,7 @@ class ZJNotice: NSObject {
             UIGraphicsEndImageContext()
             return imageOfInfo!
             
-
+            
         }
     }
     

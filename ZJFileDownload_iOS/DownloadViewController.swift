@@ -11,15 +11,14 @@ import UIKit
 class DownloadViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,ZJFileDownloadDelegate,UIDocumentInteractionControllerDelegate {
     
     @IBOutlet weak var tableView: UITableView!
-    
-    var logger = XCGLogger.defaultInstance();
+
     var documentInteractionController:UIDocumentInteractionController!;
     
     var isFirstLoad = true;
     
-    let fileManager = NSFileManager.defaultManager();
-    let documentsPath: AnyObject = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,.UserDomainMask,true)[0]
-    private static let documentsPath: AnyObject = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,.UserDomainMask,true)[0]
+    let fileManager = FileManager.default;
+    let documentsPath: AnyObject = NSSearchPathForDirectoriesInDomains(.documentDirectory,.userDomainMask,true)[0] as AnyObject
+    fileprivate static let documentsPath: AnyObject = NSSearchPathForDirectoriesInDomains(.documentDirectory,.userDomainMask,true)[0] as AnyObject
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -29,7 +28,7 @@ class DownloadViewController: UIViewController,UITableViewDataSource,UITableView
         ZJFileDataSource.addFileInfo(ZJFileInfo(name: "好压.exe", url: "http://dl.2345.com/haozip/haozip_v5.5.exe", perSize: "6.59M", fileType: "exe"));
         
         
-        self.tableView.registerNib(UINib.init(nibName: "DownloadTableViewCell", bundle: nil), forCellReuseIdentifier: "DownloadTableViewCell");
+        self.tableView.register(UINib.init(nibName: "DownloadTableViewCell", bundle: nil), forCellReuseIdentifier: "DownloadTableViewCell");
         self.tableView.dataSource=self;
         self.tableView.delegate = self;
         
@@ -38,16 +37,16 @@ class DownloadViewController: UIViewController,UITableViewDataSource,UITableView
     }
     
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         //禁止边缘手势
-        self.navigationController?.interactivePopGestureRecognizer!.enabled = false;
+        self.navigationController?.interactivePopGestureRecognizer!.isEnabled = false;
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         ZJDownloadManager.delegate = self;
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         ZJDownloadManager.delegate = nil;
     }
     
@@ -58,19 +57,19 @@ class DownloadViewController: UIViewController,UITableViewDataSource,UITableView
     
     
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     }
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1;
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return ZJFileDataSource.myDataSource.count;
     }
     
     //为表视图单元格提供数据，该方法是必须实现的方法
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let num=indexPath.row
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let num=(indexPath as NSIndexPath).row
         let item = ZJFileDataSource.myDataSource[num];
         if(isFirstLoad){
             if(ZJDownloadManager.fileIsExist(item)){
@@ -83,84 +82,84 @@ class DownloadViewController: UIViewController,UITableViewDataSource,UITableView
             }
         }
 
-        let cell = tableView.dequeueReusableCellWithIdentifier("DownloadTableViewCell") as! DownloadTableViewCell;
+        let cell = tableView.dequeueReusableCell(withIdentifier: "DownloadTableViewCell") as! DownloadTableViewCell;
         cell.fileNameLabel.text = item.name;
         cell.fileSizeLabel.text = item.downloadPerSize + "/" + item.perSize;
-        cell.downloadButton.setTitle(item.getButtonText(), forState: UIControlState.Normal);
+        cell.downloadButton.setTitle(item.getButtonText(), for: UIControlState());
         cell.statusLabel.text = item.getStatusText();
         cell.progress.progress = item.progress;
         cell.downloadButton.tag = num;
-        cell.downloadButton.addTarget(self, action: "downloadClick:", forControlEvents: UIControlEvents.TouchUpInside)
-        let path = NSBundle.mainBundle().pathForResource("big_ico_\(item.fileType.lowercaseString)@2x", ofType: "png");
+        cell.downloadButton.addTarget(self, action: #selector(DownloadViewController.downloadClick(_:)), for: UIControlEvents.touchUpInside)
+        let path = Bundle.main.path(forResource: "big_ico_\(item.fileType.lowercased())@2x", ofType: "png");
         if(path == nil){
             cell.leftImageView.image = UIImage(named: "big_ico_hlp");
         }else{
-            cell.leftImageView.image = UIImage(named: "big_ico_\(item.fileType.lowercaseString)");
+            cell.leftImageView.image = UIImage(named: "big_ico_\(item.fileType.lowercased())");
         }
-        cell.selectionStyle = UITableViewCellSelectionStyle.None;
+        cell.selectionStyle = UITableViewCellSelectionStyle.none;
         return cell;
     }
     
     
-    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return false;
     }
     
-    func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return false;
     }
     
-    func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
         return true;
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         ZJ_Func.delay(0.1) {
             ZJ_Func.unselectCell(tableView);
         }
     }
     
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80;
     }
     
     
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 0.001;
     }
     
-    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 0.001;
     }
     
-    func downloadClick(button:UIButton){
+    func downloadClick(_ button:UIButton){
         let fileInfo = ZJFileDataSource.myDataSource[button.tag];
         switch (fileInfo.status) {
         case ZJFileInfo.STATUS_NOT_DOWNLOAD:
-            logger.info("开始下载...")
+            print("开始下载...")
             ZJDownloadManager.download(fileInfo);
             break;
         case ZJFileInfo.STATUS_CONNECTING:
             break;
         case ZJFileInfo.STATUS_CONNECT_ERROR:
-            logger.info("重新下载")
+            print("重新下载")
             ZJDownloadManager.download(fileInfo);
             break;
         case ZJFileInfo.STATUS_DOWNLOADING:
-            logger.info("暂停下载")
+            print("暂停下载")
             ZJDownloadManager.pause(fileInfo);
             break;
         case ZJFileInfo.STATUS_PAUSED:
-            logger.info("继续下载")
+            print("继续下载")
             ZJDownloadManager.start(fileInfo);
             break;
         case ZJFileInfo.STATUS_DOWNLOAD_ERROR:
-            logger.info("重新下载")
+            print("重新下载")
             ZJDownloadManager.download(fileInfo);
             break;
         case ZJFileInfo.STATUS_COMPLETE:
-            logger.info("打开文件")
+            print("打开文件")
             openFile(fileInfo);
             break;
         default:
@@ -172,13 +171,13 @@ class DownloadViewController: UIViewController,UITableViewDataSource,UITableView
         self.tableView.reloadData();
     }
     
-    func openFile(fileInfo:ZJFileInfo){
-        let isExist = fileManager.fileExistsAtPath(documentsPath.stringByAppendingString("/Download/\(fileInfo.name)"));
+    func openFile(_ fileInfo:ZJFileInfo){
+        let isExist = fileManager.fileExists(atPath: documentsPath.appending("/Download/\(fileInfo.name)"));
         if(isExist){
-            let des =  NSURL(fileURLWithPath: documentsPath.stringByAppendingString("/Download/\(fileInfo.name)"));
+            let des =  URL(fileURLWithPath: documentsPath.appending("/Download/\(fileInfo.name)"));
             
-            self.documentInteractionController.URL = des;
-            self.documentInteractionController.presentOpenInMenuFromRect(self.view.frame, inView: self.view, animated: true);
+            self.documentInteractionController.url = des;
+            self.documentInteractionController.presentOpenInMenu(from: self.view.frame, in: self.view, animated: true);
             
         }else{
             self.showNoticeInfo("文件尚未下载", time: 1.2);

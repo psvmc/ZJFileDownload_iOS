@@ -134,7 +134,6 @@
 		3FF8BD891C803CD700C9600B /* big_ico_zip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8BD1C1C803CD600C9600B /* big_ico_zip@2x.png */; };
 		3FF8BD8A1C803CD700C9600B /* DownloadTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8BD1E1C803CD600C9600B /* DownloadTableViewCell.swift */; };
 		3FF8BD8B1C803CD700C9600B /* DownloadTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8BD1F1C803CD600C9600B /* DownloadTableViewCell.xib */; };
-		3FF8BD8F1C803D3A00C9600B /* XCGLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8BD8E1C803D3A00C9600B /* XCGLogger.swift */; };
 		3FF8BD921C803DDC00C9600B /* ZJNotice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8BD911C803DDC00C9600B /* ZJNotice.swift */; };
 		3FF8BD941C803E3800C9600B /* ZJYuanjiaoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8BD931C803E3800C9600B /* ZJYuanjiaoButton.swift */; };
 		3FF8BD961C803E8200C9600B /* ZJ_Func.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8BD951C803E8200C9600B /* ZJ_Func.swift */; };
@@ -282,7 +281,6 @@
 		3FF8BD1C1C803CD600C9600B /* big_ico_zip@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "big_ico_zip@2x.png"; sourceTree = "<group>"; };
 		3FF8BD1E1C803CD600C9600B /* DownloadTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadTableViewCell.swift; sourceTree = "<group>"; };
 		3FF8BD1F1C803CD600C9600B /* DownloadTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DownloadTableViewCell.xib; sourceTree = "<group>"; };
-		3FF8BD8E1C803D3A00C9600B /* XCGLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCGLogger.swift; sourceTree = "<group>"; };
 		3FF8BD911C803DDC00C9600B /* ZJNotice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZJNotice.swift; sourceTree = "<group>"; };
 		3FF8BD931C803E3800C9600B /* ZJYuanjiaoButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZJYuanjiaoButton.swift; sourceTree = "<group>"; };
 		3FF8BD951C803E8200C9600B /* ZJ_Func.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZJ_Func.swift; sourceTree = "<group>"; };
@@ -525,17 +523,8 @@
 			isa = PBXGroup;
 			children = (
 				3FF8BD901C803DDC00C9600B /* ZJNotice */,
-				3FF8BD8D1C803D3A00C9600B /* XCGLogger */,
 			);
 			path = "Lib-Swift";
-			sourceTree = "<group>";
-		};
-		3FF8BD8D1C803D3A00C9600B /* XCGLogger */ = {
-			isa = PBXGroup;
-			children = (
-				3FF8BD8E1C803D3A00C9600B /* XCGLogger.swift */,
-			);
-			path = XCGLogger;
 			sourceTree = "<group>";
 		};
 		3FF8BD901C803DDC00C9600B /* ZJNotice */ = {
@@ -579,6 +568,7 @@
 					3FF8BC6B1C80390800C9600B = {
 						CreatedOnToolsVersion = 7.2.1;
 						DevelopmentTeam = 6U6NNJD6PX;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -735,7 +725,6 @@
 				3FF8BD961C803E8200C9600B /* ZJ_Func.swift in Sources */,
 				3FF8BD921C803DDC00C9600B /* ZJNotice.swift in Sources */,
 				3FF8BCAE1C803B8D00C9600B /* ZJFileDataSource.swift in Sources */,
-				3FF8BD8F1C803D3A00C9600B /* XCGLogger.swift in Sources */,
 				3FF8BCA31C80399B00C9600B /* AFURLSessionManager.m in Sources */,
 				3FF8BCA21C80399B00C9600B /* AFURLResponseSerialization.m in Sources */,
 				3FF8BD8A1C803CD700C9600B /* DownloadTableViewCell.swift in Sources */,
@@ -863,6 +852,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "cn.psvmc.ZJFileDownload-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SWIFT_MODULE_NAME)/Bridge-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -877,6 +867,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "cn.psvmc.ZJFileDownload-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SWIFT_MODULE_NAME)/Bridge-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -899,6 +890,7 @@
 				3FF8BC801C80390800C9600B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

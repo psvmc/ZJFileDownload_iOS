@@ -11,13 +11,13 @@ import Foundation
 class ZJDownloadManager{
     static var delegate:ZJFileDownloadDelegate?;
     static var downloadSequence:[String:AFHTTPRequestOperation] = [:];
-    private static let documentsPath: AnyObject = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,.UserDomainMask,true)[0]
+    fileprivate static let documentsPath: AnyObject = NSSearchPathForDirectoriesInDomains(.documentDirectory,.userDomainMask,true)[0] as AnyObject
     //下载
     
-    static var lastTime = NSDate().timeIntervalSince1970 * 1000;
+    static var lastTime = Date().timeIntervalSince1970 * 1000;
     
     
-    static func getFileSize(byte:CGFloat)->String{
+    static func getFileSize(_ byte:CGFloat)->String{
         let oneKB = CGFloat(1024.0);
         let oneMB = CGFloat(1024.0*1024);
         let oneGB = CGFloat(1024.0*1024*1024);
@@ -32,7 +32,7 @@ class ZJDownloadManager{
         }
     }
     
-    static func  download(fileInfo:ZJFileInfo){
+    static func  download(_ fileInfo:ZJFileInfo){
         if(fileIsExist(fileInfo)){
             fileInfo.status = ZJFileInfo.STATUS_COMPLETE;
             fileInfo.progress = 1;
@@ -41,8 +41,8 @@ class ZJDownloadManager{
         }else if(!operationIsExist(fileInfo)){
             fileInfo.status = ZJFileInfo.STATUS_CONNECTING;
             self.delegate?.viewRefresh();
-            
-            let operation = LCDownloadManager.downloadFileWithURLString(fileInfo.url, cachePath: fileInfo.name, progress: {
+
+            let operation = LCDownloadManager.downloadFile(withURLString: fileInfo.url, cachePath: fileInfo.name, progress: {
                 (progress:CGFloat!, totalByteRead:CGFloat!, totalByteExpectedToRead:CGFloat!) -> Void in
                 let progressFloat:Float = (String(format: "%.2f", Float(progress)) as NSString).floatValue;
                 if(fileInfo.progress != progressFloat){
@@ -61,7 +61,7 @@ class ZJDownloadManager{
                     if(progressFloat == 1){
                         self.delegate?.viewRefresh();
                     }else if(progressFloat > 0){
-                        let nowTime = NSDate().timeIntervalSince1970 * 1000;
+                        let nowTime = Date().timeIntervalSince1970 * 1000;
                         if(nowTime - lastTime > 1000){
                             lastTime = nowTime;
                             self.delegate?.viewRefresh();
@@ -70,14 +70,11 @@ class ZJDownloadManager{
 
                     
                 }
-                
-                
-                
                 }, success: {
-                    (operation:AFHTTPRequestOperation!, responseObject: AnyObject!) -> Void in
+                    (operation:AFHTTPRequestOperation?, responseObject: Any?) -> Void in
                     
                 }, failure: {
-                    (operation:AFHTTPRequestOperation?,error:NSError?) -> Void in
+                    (operation:AFHTTPRequestOperation?,error:Error?) -> Void in
                     
                     fileInfo.status = ZJFileInfo.STATUS_DOWNLOAD_ERROR;
                     self.delegate?.viewRefresh();
@@ -89,16 +86,16 @@ class ZJDownloadManager{
     
     
     //暂停
-    static func pause(fileInfo:ZJFileInfo){
+    static func pause(_ fileInfo:ZJFileInfo){
         let operation = downloadSequence[fileInfo.url];
         if(operation != nil){
-            LCDownloadManager.pauseWithOperation(operation);
+            LCDownloadManager.pause(with: operation);
             self.delegate?.viewRefresh();
         }
     }
     
     //继续
-    static func start(fileInfo:ZJFileInfo){
+    static func start(_ fileInfo:ZJFileInfo){
         let operation = downloadSequence[fileInfo.url];
         if(operation != nil){
             operation?.start();
@@ -107,14 +104,14 @@ class ZJDownloadManager{
     }
     
     ///文件是否已存在
-    static func fileIsExist(fileInfo:ZJFileInfo)->Bool{
-        let fileManager = NSFileManager.defaultManager();
-        let isExist = fileManager.fileExistsAtPath(documentsPath.stringByAppendingString("/Download/\(fileInfo.name)"));
+    static func fileIsExist(_ fileInfo:ZJFileInfo)->Bool{
+        let fileManager = FileManager.default;
+        let isExist = fileManager.fileExists(atPath: documentsPath.appending("/Download/\(fileInfo.name)"));
         return isExist;
     }
     
     ///下载序列中是否有该序列
-    static func operationIsExist(fileInfo:ZJFileInfo)->Bool{
+    static func operationIsExist(_ fileInfo:ZJFileInfo)->Bool{
         for (url,_) in downloadSequence{
             if(url == fileInfo.url){
                 return true;
